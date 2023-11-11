@@ -3,15 +3,14 @@
     import { user, userData, storage, db } from '$lib/firebase'
     import { doc, updateDoc } from 'firebase/firestore'
     import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-    
 
     let previewURL: string
     let uploading = false
     $: href = `/${$userData?.username}/edit`
 
-    async function upload(e: any) {
+    async function upload(event: any) {
         uploading = true
-        const file = e.target.files[0]
+        const file = event.target.files[0]
         previewURL = URL.createObjectURL(file)
         const storageRef = ref(storage, `users/${$user!.uid}/profile.png`)
         const result = await uploadBytes(storageRef, file)
