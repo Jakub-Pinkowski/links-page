@@ -20,7 +20,7 @@
         <ul class="flex flex-wrap justify-center">
             {#each users as user (user.username)}
                 <li
-                    class="p-4 m-4 flex flex-col items-center bg-neutral-light rounded-lg shadow-2xl border-double border-4 border-lime-900"
+                    class="p-4 m-4 flex flex-col items-center bg-neutral-light rounded-lg shadow-2xl border-double border-4 border-violet-200"
                 >
                     <a href={`/${user.username}`}>
                         <img
