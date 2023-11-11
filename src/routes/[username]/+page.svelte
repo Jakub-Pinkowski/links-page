@@ -28,6 +28,6 @@
     </ul>
 
     {#if $user && $userData?.username === data.username}
-        <a class="btn btn-primary mt-20" href="/{data.username}/edit">Edit your profile</a>
+        <a class="btn btn-outline btn-info mt-20" href="/{data.username}/edit">Edit your profile</a>
     {/if}
 </main>
