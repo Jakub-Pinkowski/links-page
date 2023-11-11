@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { auth, user } from '$lib/firebase'
-
+    import { auth, user, userData } from '$lib/firebase'
     import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+
+    $: href = `/${$userData?.username}/edit`
 
     async function signInWithGoogle() {
         const provider = new GoogleAuthProvider()
@@ -31,6 +32,7 @@
     <p class="text-center text-success">You are logged in</p>
     <button class="btn btn-warning mt-5" on:click={() => signOut(auth)}>Sign out</button>
     <a href="/login/username" class="btn btn-primary mt-10"> Choose your username</a>
+    <a {href} class="btn btn-info mt-10"> Edit your profile </a>
 {:else}
     <button class="btn btn-primary" on:click={signInWithGoogle}>Sign in with Google</button>
 {/if}

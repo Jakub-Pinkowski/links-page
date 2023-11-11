@@ -2,8 +2,12 @@
     import type { PageData } from './$types'
     import { page } from '$app/stores'
     import { enhance } from '$app/forms'
+    import { userData } from '$lib/firebase'
 
     export let data: PageData
+
+    $: href = `/${$userData?.username}/edit`
+
 </script>
 
 <main class="max-w-lg prose text-center mx-auto my-6">
@@ -12,7 +16,7 @@
     <p>Status Code: {$page.status}</p>
     <p class="text-error">{$page.form?.problem ?? ''}</p>
 
-    <form method="POST" use:enhance>
+    <form class="flex flex-col" method="POST" use:enhance>
         <div class="form-control">
             <label for="bio" class="label">
                 <span class="label-text">Your bio</span>
@@ -23,6 +27,7 @@
                 value={data.bio}
             />
         </div>
-        <button class="btn btn-primary my-5">Update Bio</button>
+        <button class="btn btn-outline btn-success my-5">Update Bio</button>
+        <a href={href} class="btn btn-outline btn-info my-5">Back to your links</a>
     </form>
 </main>

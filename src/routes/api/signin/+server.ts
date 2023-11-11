@@ -14,6 +14,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         const options = { maxAge: expiresIn, httpOnly: true, secure: true, path: '/' }
 
         cookies.set('__session', cookie, options)
+        
 
         return json({ status: 'signedIn' })
     } else {
