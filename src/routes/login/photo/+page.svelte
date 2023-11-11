@@ -34,7 +34,6 @@
                 class="mx-auto"
             />
             <label for="photoURL" class="label">
-                <span class="label-text">Pick a file</span>
             </label>
             <input
                 on:change={upload}

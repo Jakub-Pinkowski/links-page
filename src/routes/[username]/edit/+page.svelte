@@ -1,6 +1,5 @@
 <script lang="ts">
     import { page } from '$app/stores'
-    import AuthCheck from '$lib/components/AuthCheck.svelte'
     import SortableList from '$lib/components/SortableList.svelte'
     import UserLink from '$lib/components/UserLink.svelte'
     import { db, userData, user } from '$lib/firebase'
