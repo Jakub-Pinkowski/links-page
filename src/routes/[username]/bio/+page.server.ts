@@ -1,6 +1,6 @@
-import type { PageServerLoad } from './$types'
-import { adminAuth, adminDB } from '$lib/server/admin'
-import { error, redirect } from '@sveltejs/kit'
+import type { PageServerLoad, Actions } from './$types'
+import { adminDB } from '$lib/server/admin'
+import { error, fail, redirect } from '@sveltejs/kit'
 
 export const load = (async ({ locals, params }) => {
     const uid = locals.userID
@@ -20,3 +20,27 @@ export const load = (async ({ locals, params }) => {
         bio,
     }
 }) satisfies PageServerLoad
+
+export const actions = {
+    default: async ({ locals, request, params }) => {
+        const uid = locals.userID
+
+        const data = await request.formData()
+        const bio: string | null = data.get('bio') as string
+
+        const userRef = adminDB.collection('users').doc(uid!)
+        const { username } = (await userRef.get()).data()!
+
+        if (params.username !== username) {
+            throw error(401, 'That username does not belong to you')
+        }
+
+        if (bio !== null && bio.length > 260) {
+            return fail(400, { problem: 'Bio must be less than 260 characters' })
+        }
+
+        await userRef.update({
+            bio,
+        })
+    },
+} satisfies Actions
