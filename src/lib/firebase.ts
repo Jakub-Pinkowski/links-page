@@ -1,6 +1,15 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore, doc, onSnapshot } from 'firebase/firestore'
-import { getAuth, onAuthStateChanged, type User } from 'firebase/auth'
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    signOut,
+    getAuth,
+    onAuthStateChanged,
+    type User,
+} from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
 import { writable, type Readable, derived } from 'svelte/store'
 
@@ -69,6 +78,56 @@ export function docStore<T>(path: string) {
         ref: docRef,
         id: docRef.id,
     }
+}
+
+export async function signInWithGoogle() {
+    const provider = new GoogleAuthProvider()
+    const credential = await signInWithPopup(auth, provider)
+
+    const idToken = await credential.user.getIdToken()
+
+    const res = await fetch('/api/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+    })
+}
+
+export async function signOutSSR() {
+    const res = await fetch('/api/signin', { method: 'DELETE' })
+    await signOut(auth)
+}
+
+// Register with email and password
+export async function registerWithEmail(email: string, password: string) {
+    const credential = await createUserWithEmailAndPassword(auth, email, password)
+
+    const idToken = await credential.user.getIdToken()
+
+    const res = await fetch('/api/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+    })
+}
+
+// Sign in with email and password
+export async function signInWithEmail(email: string, password: string) {
+    const credential = await signInWithEmailAndPassword(auth, email, password)
+
+    const idToken = await credential.user.getIdToken()
+
+    const res = await fetch('/api/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+    })
 }
 
 interface UserData {
