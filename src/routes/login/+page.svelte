@@ -47,7 +47,13 @@
         <input class="m-2 w-full p-1" type="email" id="email" bind:value={email} required />
 
         <label class="m-2" for="password">Password:</label>
-        <input class="m-2 w-full p-1" type="password" id="password" bind:value={password} required />
+        <input
+            class="m-2 w-full p-1"
+            type="password"
+            id="password"
+            bind:value={password}
+            required
+        />
 
         <button type="submit" class="btn btn-success mt-3 w-32 text-center">
             {isRegistering ? 'Register' : 'Login'}
