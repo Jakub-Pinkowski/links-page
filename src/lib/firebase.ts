@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, onSnapshot } from 'firebase/firestore'
+import { getFirestore, doc, getDocs, onSnapshot, collection } from 'firebase/firestore'
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -80,6 +80,7 @@ export function docStore<T>(path: string) {
     }
 }
 
+// Sign in with Google
 export async function signInWithGoogle() {
     const provider = new GoogleAuthProvider()
     const credential = await signInWithPopup(auth, provider)
@@ -95,6 +96,7 @@ export async function signInWithGoogle() {
     })
 }
 
+// Sign out
 export async function signOutSSR() {
     const res = await fetch('/api/signin', { method: 'DELETE' })
     await signOut(auth)
@@ -128,6 +130,13 @@ export async function signInWithEmail(email: string, password: string) {
         },
         body: JSON.stringify({ idToken }),
     })
+}
+
+// Get all users
+export async function getUsers() {
+    const usersCollection = collection(db, 'users')
+    const snapshot = await getDocs(usersCollection)
+    return snapshot.docs.map((doc) => doc.data())
 }
 
 interface UserData {
