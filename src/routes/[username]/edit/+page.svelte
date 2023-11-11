@@ -1,18 +1,18 @@
 <script lang="ts">
     import { page } from '$app/stores'
+    import AuthCheck from '$lib/components/AuthCheck.svelte'
+    import SortableList from '$lib/components/SortableList.svelte'
     import UserLink from '$lib/components/UserLink.svelte'
     import { db, userData, user } from '$lib/firebase'
     import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from 'firebase/firestore'
     import { writable } from 'svelte/store'
 
     const icons = ['Twitter', 'YouTube', 'TikTok', 'LinkedIn', 'GitHub', 'Custom']
-
     const formDefaults = {
         icon: 'custom',
         title: '',
         url: 'https://',
     }
-
     const formData = writable(formDefaults)
 
     let showForm = false
@@ -20,6 +20,12 @@
     $: urlIsValid = $formData.url.match(/^(ftp|http|https):\/\/[^ "]+$/)
     $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0
     $: formIsValid = urlIsValid && titleIsValid
+
+    function sortList(e: CustomEvent) {
+        const newList = e.detail
+        const userRef = doc(db, 'users', $user!.uid)
+        setDoc(userRef, { links: newList }, { merge: true })
+    }
 
     async function addLink(e: SubmitEvent) {
         const userRef = doc(db, 'users', $user!.uid)
@@ -47,6 +53,13 @@
         })
     }
 
+    async function toggleProfileStatus(item: any) {
+        const userRef = doc(db, 'users', $user!.uid)
+        await updateDoc(userRef, {
+            published: !$userData?.published,
+        })
+    }
+
     function cancelLink() {
         formData.set(formDefaults)
         showForm = false
@@ -57,8 +70,49 @@
     {#if $userData?.username == $page.params.username}
         <h1 class="mx-2 text-2xl font-bold mt-8 mb-4 text-center">Edit your Profile</h1>
 
-        <!-- INSERT sortable list here -->
+        <div class="text-center mb-8">
+            <p>
+                Profile Link:
+                <a href={`/${$userData?.username}`} class="link link-accent">
+                    /{$userData?.username}
+                </a>
+            </p>
+        </div>
 
+        <div class="text-center my-4">
+            <a class="btn btn-outline btn-xs" href="/login/photo">Change photo</a>
+            <a class="btn btn-outline btn-xs" href={`/${$userData.username}/bio`}>Edit Bio</a>
+        </div>
+
+        <form class="form-control">
+            <label class="label cursor-pointer flex items-start justify-center">
+                <span class="label-text mr-6">
+                    <div
+                        class="tooltip group-hover:tooltip-open"
+                        data-tip="If public, the world can see your profile"
+                    >
+                        {$userData?.published ? 'Public profile' : 'Private profile'}
+                    </div>
+                </span>
+                <input
+                    type="checkbox"
+                    class="toggle toggle-success"
+                    checked={$userData?.published}
+                    on:change={toggleProfileStatus}
+                />
+            </label>
+        </form>
+
+        <SortableList list={$userData?.links} on:sort={sortList} let:item let:index>
+            <div class="group relative">
+                <UserLink {...item} />
+                <button
+                    on:click={() => deleteLink(item)}
+                    class="btn btn-xs btn-error invisible group-hover:visible transition-all absolute -right-6 bottom-10"
+                    >Delete</button
+                >
+            </div>
+        </SortableList>
         {#if showForm}
             <form
                 on:submit|preventDefault={addLink}

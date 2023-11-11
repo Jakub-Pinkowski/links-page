@@ -76,6 +76,7 @@ interface UserData {
     bio: string
     photoURL: string
     links: any[]
+    published: boolean
 }
 
 export const userData: Readable<UserData | null> = derived(user, ($user, set) => {
