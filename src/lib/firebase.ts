@@ -132,7 +132,7 @@ export async function signInWithEmail(email: string, password: string) {
     })
 }
 
-// Get all users
+// Get all users from firestore
 export async function getUsers() {
     const usersCollection = collection(db, 'users')
     const snapshot = await getDocs(usersCollection)
