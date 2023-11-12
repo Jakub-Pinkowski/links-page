@@ -17,17 +17,12 @@
             all your essential links in one place. Streamline your online presence, just like
             Linktree, and effortlessly connect with your audience across various platforms. Elevate
             your link-sharing experience with Links-Page – where simplicity meets efficiency for
-            managing your digital identity.
-            Made with SvelteKit 
+            managing your digital identity. Made with SvelteKit
         </h2>
     </div>
     <div class="card-body items-center text-center">
-        <button class="btn btn-primary">
-            <a href="/login">Login</a>
-        </button>
-        <span
-            class="text-l text-violet-500"
-        > Set up your own link page </span>
+        <a class="btn btn-primary" href="/login">Login</a>
+        <span class="text-l text-violet-500"> Set up your own link page </span>
     </div>
     <div class="card-body flex flex-col items-center justify-center">
         <h3 class="card-title text-3xl mb-6">Browse our users</h3>

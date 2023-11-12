@@ -102,6 +102,9 @@
             </label>
         </form>
 
+        <h2 class="mx-2 text-xl font-bold mt-8 mb-4 text-center">Your Links</h2>
+        <p class="text-center text-xs text-neutral-500 mb-4">Drag and Drop to rearrange</p>
+
         <SortableList list={$userData?.links} on:sort={sortList} let:item let:index>
             <div class="group relative">
                 <UserLink {...item} />
