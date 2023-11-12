@@ -32,19 +32,41 @@
         }, 500)
     }
 
+    function getRandomSeaAnimal(): string {
+        const seaAnimals = [
+            'Seal',
+            'Dolphin',
+            'Whale',
+            'Shark',
+            'Jellyfish',
+            'Octopus',
+            'Sea Turtle',
+            'Squid',
+            'Manatee',
+            'Sea Horse',
+        ]
+        const randomIndex = Math.floor(Math.random() * seaAnimals.length)
+        return seaAnimals[randomIndex]
+    }
+
     async function confirmUsername() {
         console.log('confirming username', username)
+        const randomSeaAnimal = getRandomSeaAnimal()
+        const animalWikipediaURL = `https://en.wikipedia.org/wiki/${randomSeaAnimal.replace(
+            ' ',
+            '_'
+        )}`
         const batch = writeBatch(db)
         batch.set(doc(db, 'usernames', username), { uid: $user?.uid })
         batch.set(doc(db, 'users', $user!.uid), {
             username,
             photoURL: $user?.photoURL ?? null,
             published: true,
-            bio: 'I am the Walrus',
+            bio: `I am a ${randomSeaAnimal}`,
             links: [
                 {
                     title: 'Test Link',
-                    url: 'https://kung.foo',
+                    url: animalWikipediaURL,
                     icon: 'custom',
                 },
             ],
