@@ -4,7 +4,7 @@
 
 <div class="min-h-screen flex flex-col">
     <div class="navbar bg-base-100">
-        <a href='/' class="btn btn-ghost normal-case text-xl">Seal?</a>
+        <a href='/' class="btn btn-ghost normal-case text-xl">Links-Page</a>
     </div>
     <slot class="flex-grow" />
     <footer class="footer items-center p-4 bg-neutral text-neutral-content mt-auto">
