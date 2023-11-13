@@ -23,7 +23,6 @@
             }
         } catch (error: any) {
             console.error('Email authentication failed:', error.message)
-            // Handle error as needed (e.g., show an error message to the user)
         }
     }
 </script>
